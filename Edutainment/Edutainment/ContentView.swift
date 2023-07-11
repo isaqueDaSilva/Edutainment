@@ -13,9 +13,9 @@ struct ContentView: View {
     
     @State private var startGame = false
     
-    @State private var tableSelect1 = 1
-    @State private var tableSelect2 = 2
-    @State private var tableSelect3 = 3
+    @State private var tableSelect = "1"
+    
+    let tables = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     
     @ViewBuilder var stepButton: some View {
         VStack {
@@ -26,7 +26,39 @@ struct ContentView: View {
         }
     }
     
-    let tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    @ViewBuilder var choices: some View {
+        VStack {
+            Spacer()
+            Text("Before starting the game:")
+                .font(.title3.bold())
+            
+            Spacer()
+            
+            if step == 1 {
+                Text("Select which multiplication table do you want to practice?")
+                    .font(.headline.bold())
+                    .multilineTextAlignment(.center)
+                
+                Picker("Table", selection: $tableSelect) {
+                    ForEach(tables, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding()
+            }
+            
+            Spacer()
+            
+            stepButton
+            Spacer()
+        }
+        .frame(maxWidth: 350, maxHeight: 250)
+        .padding(.vertical, 20)
+        .background(.thinMaterial)
+        .cornerRadius(20)
+        .shadow(radius: 10)
+    }
     
     var body: some View {
         ZStack {
@@ -49,30 +81,13 @@ struct ContentView: View {
                     })
                     .buttonStyle(.borderedProminent)
                     
-                    VStack {
-                        Text("Before starting the game:")
-                            .font(.title2.bold())
-                        
-                        if step == 1 {
-                            Picker("Select which multiplication tables you want to practice?", selection: $tableSelect1) {
-                                ForEach(tables, id: \.self) {
-                                    Text("\($0)")
-                                }
-                            }
-                        }
-                        
-                        stepButton
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
-                    .background(.thinMaterial)
-                    .cornerRadius(20)
-                    .shadow(radius: 10)
+                    choices
                 }
             }
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
