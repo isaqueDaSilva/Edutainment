@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var showingSteps = false
     @State private var step = 1
     
-    @State private var startGame = false
+    @State private var gameIsOn = false
     
     @State private var tableSelect = "1"
     let tables = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
@@ -22,10 +22,31 @@ struct ContentView: View {
     @State private var difficultyLevelSelected = "Easy"
     let difficultyLevel = ["Easy", "Medium", "Hard"]
     
+    @ViewBuilder var playButton: some View {
+        Button("Play", action: {
+            withAnimation {
+                showingSteps = true
+            }
+        })
+        .buttonStyle(.borderedProminent)
+    }
+    
     @ViewBuilder var stepButton: some View {
         VStack {
             Button("Next", action: {
                 step += 1
+            })
+            .buttonStyle(.borderedProminent)
+        }
+    }
+    
+    @ViewBuilder var startButton: some View {
+        VStack {
+            Button("Start Game", action: {
+                withAnimation {
+                    showingSteps = false
+                    gameIsOn = true
+                }
             })
             .buttonStyle(.borderedProminent)
         }
@@ -79,14 +100,13 @@ struct ContentView: View {
             
             Spacer()
             
-            stepButton
+            if step < 3 {
+                stepButton
+            } else {
+                startButton
+            }
             Spacer()
         }
-        .frame(maxWidth: 350, maxHeight: 250)
-        .padding(.vertical, 20)
-        .background(.thinMaterial)
-        .cornerRadius(20)
-        .shadow(radius: 10)
     }
     
     var body: some View {
@@ -94,23 +114,24 @@ struct ContentView: View {
             LinearGradient(colors: [.blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
             
-            if showingSteps == false {
-                VStack {
+            VStack {
+                if gameIsOn == false {
                     Text("Welcome to Edutainment")
                         .font(.title.bold())
-                    Text("The perfect space for fun and learning 😉")
-                        .frame(width: 300)
-                        .font(.headline.bold())
-                        .multilineTextAlignment(.center)
                     
-                    Button("Play", action: {
-                        withAnimation {
-                            showingSteps = true
-                        }
-                    })
-                    .buttonStyle(.borderedProminent)
+                    if showingSteps == false {
+                        Text("The perfect space for fun and learning 😉")
+                            .frame(width: 300)
+                            .font(.headline.bold())
+                            .multilineTextAlignment(.center)
+                        playButton
+                    }
                     
                     choices
+                        .frame(maxWidth: 350, maxHeight: showingSteps ? 250 : 0)
+                        .background(.thinMaterial)
+                        .cornerRadius(20)
+                        .shadow(radius: 10)
                 }
             }
         }
