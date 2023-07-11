@@ -14,8 +14,13 @@ struct ContentView: View {
     @State private var startGame = false
     
     @State private var tableSelect = "1"
-    
     let tables = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    
+    @State private var numbersOfQuestionsSelected = "5"
+    let numbersOfQuestions = ["5", "10", "20"]
+    
+    @State private var difficultyLevelSelected = "Easy"
+    let difficultyLevel = ["Easy", "Medium", "Hard"]
     
     @ViewBuilder var stepButton: some View {
         VStack {
@@ -51,8 +56,8 @@ struct ContentView: View {
                     .font(.headline.bold())
                     .multilineTextAlignment(.center)
                 
-                Picker("Table", selection: $tableSelect) {
-                    ForEach(tables, id: \.self) {
+                Picker("Number of Question", selection: $numbersOfQuestionsSelected) {
+                    ForEach(numbersOfQuestions, id: \.self) {
                         Text($0)
                     }
                 }
@@ -63,8 +68,8 @@ struct ContentView: View {
                     .font(.headline.bold())
                     .multilineTextAlignment(.center)
                 
-                Picker("Table", selection: $tableSelect) {
-                    ForEach(tables, id: \.self) {
+                Picker("Difficulty Level", selection: $difficultyLevelSelected) {
+                    ForEach(difficultyLevel, id: \.self) {
                         Text($0)
                     }
                 }
