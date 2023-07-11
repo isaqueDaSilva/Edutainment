@@ -13,14 +13,17 @@ struct ContentView: View {
     
     @State private var gameIsOn = false
     
-    @State private var tableSelect = "1"
-    let tables = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    @State private var tableSelect = 1
+    let tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     
-    @State private var numbersOfQuestionsSelected = "5"
-    let numbersOfQuestions = ["5", "10", "20"]
+    @State private var numbersOfQuestionsSelected = 5
+    let numbersOfQuestions = [5, 10, 20]
     
     @State private var difficultyLevelSelected = "Easy"
     let difficultyLevel = ["Easy", "Medium", "Hard"]
+    
+    @State private var round = 1
+    @State private var points = 0
     
     @ViewBuilder var playButton: some View {
         Button("Play", action: {
@@ -67,7 +70,7 @@ struct ContentView: View {
                 
                 Picker("Table", selection: $tableSelect) {
                     ForEach(tables, id: \.self) {
-                        Text($0)
+                        Text(String($0))
                     }
                 }
                 .pickerStyle(.segmented)
@@ -79,7 +82,7 @@ struct ContentView: View {
                 
                 Picker("Number of Question", selection: $numbersOfQuestionsSelected) {
                     ForEach(numbersOfQuestions, id: \.self) {
-                        Text($0)
+                        Text(String($0))
                     }
                 }
                 .pickerStyle(.segmented)
@@ -109,6 +112,38 @@ struct ContentView: View {
         }
     }
     
+    @ViewBuilder var gameView: some View {
+        VStack {
+            Spacer()
+            
+            Text(gameIsOn ? "Whats" : "")
+            
+            Spacer()
+            
+            ZStack {
+                Rectangle()
+                    .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
+                    .cornerRadius(20)
+                    .shadow(radius: 10)
+            }
+            
+            Spacer()
+            
+            HStack {
+                Text(gameIsOn ? "Round: \(round)" : "")
+                    .font(.title2.bold())
+                
+                Spacer()
+                
+                Text(gameIsOn ? "" : "")
+                    .font(.title2.bold())
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+    
     var body: some View {
         ZStack {
             LinearGradient(colors: [.blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -133,6 +168,8 @@ struct ContentView: View {
                         .cornerRadius(20)
                         .shadow(radius: 10)
                 }
+                gameView
+                    .frame(maxWidth: .infinity, maxHeight: gameIsOn ? .infinity : 0)
             }
         }
     }
