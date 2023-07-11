@@ -112,6 +112,54 @@ struct ContentView: View {
         }
     }
     
+    @ViewBuilder var numberKeyboard: some View {
+        ForEach(0..<4) { row in
+            HStack {
+                ForEach(0..<3) { colum in
+                    Button(action: {
+                        
+                    }, label: {
+                        if row < 3 {
+                            Text("\(row * 3 + colum + 1)")
+                                .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
+                                .font(.title3.bold())
+                                .foregroundColor(.white)
+                                .background(Rectangle())
+                                .cornerRadius(5)
+                        } else if row == 3 {
+                            if colum == 0 {
+                                Text(",")
+                                    .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
+                                    .font(.title3.bold())
+                                    .foregroundColor(.white)
+                                    .background(Rectangle())
+                                    .cornerRadius(5)
+                            }
+                            
+                            if colum == 1 {
+                                Text("0")
+                                    .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
+                                    .font(.title3.bold())
+                                    .foregroundColor(.white)
+                                    .background(Rectangle())
+                                    .cornerRadius(5)
+                            }
+                            
+                            if colum == 2{
+                                Text("OK")
+                                    .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
+                                    .font(.title3.bold())
+                                    .foregroundColor(.white)
+                                    .background(Rectangle())
+                                    .cornerRadius(5)
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+    
     @ViewBuilder var gameView: some View {
         VStack {
             Spacer()
@@ -122,8 +170,24 @@ struct ContentView: View {
             ZStack {
                 Rectangle()
                     .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
+                    .foregroundColor(Color("MidnightBlue"))
                     .cornerRadius(20)
                     .shadow(radius: 10)
+                
+                VStack {
+                    Spacer()
+                    Rectangle()
+                        .frame(maxWidth: 320, maxHeight: gameIsOn ? 100 : 0)
+                        .foregroundColor(Color("DevoeJadeGreen"))
+                        .cornerRadius(5)
+                    
+                    Spacer()
+                    
+                    numberKeyboard
+                    
+                    Spacer()
+                }
+                .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
             }
             
             Spacer()
