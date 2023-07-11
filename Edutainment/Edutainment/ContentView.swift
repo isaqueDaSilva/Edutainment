@@ -46,6 +46,30 @@ struct ContentView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding()
+            } else if step == 2 {
+                Text("How many questions would you like to answer?")
+                    .font(.headline.bold())
+                    .multilineTextAlignment(.center)
+                
+                Picker("Table", selection: $tableSelect) {
+                    ForEach(tables, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding()
+            } else if step == 3 {
+                Text("What difficulty level would you like to tackle?")
+                    .font(.headline.bold())
+                    .multilineTextAlignment(.center)
+                
+                Picker("Table", selection: $tableSelect) {
+                    ForEach(tables, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding()
             }
             
             Spacer()
