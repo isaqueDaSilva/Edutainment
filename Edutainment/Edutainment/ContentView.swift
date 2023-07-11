@@ -23,7 +23,7 @@ struct ContentView: View {
     let difficultyLevel = ["Easy", "Medium", "Hard"]
     
     @State private var round = 1
-    @State private var points = 0
+    @State private var score = 0
     
     @ViewBuilder var playButton: some View {
         Button("Play", action: {
@@ -116,9 +116,8 @@ struct ContentView: View {
         VStack {
             Spacer()
             
-            Text(gameIsOn ? "Whats" : "")
-            
-            Spacer()
+            Text(gameIsOn ? "How much is 2 x 2?" : "")
+                .font(.title2.bold())
             
             ZStack {
                 Rectangle()
@@ -135,7 +134,7 @@ struct ContentView: View {
                 
                 Spacer()
                 
-                Text(gameIsOn ? "" : "")
+                Text(gameIsOn ? "Score: \(score)/\(numbersOfQuestionsSelected)" : "")
                     .font(.title2.bold())
             }
             
