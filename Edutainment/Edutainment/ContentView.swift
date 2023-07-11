@@ -163,10 +163,6 @@ struct ContentView: View {
     @ViewBuilder var gameView: some View {
         VStack {
             Spacer()
-            
-            Text(gameIsOn ? "How much is 2 x 2?" : "")
-                .font(.title2.bold())
-            
             ZStack {
                 Rectangle()
                     .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
@@ -176,10 +172,16 @@ struct ContentView: View {
                 
                 VStack {
                     Spacer()
-                    Rectangle()
-                        .frame(maxWidth: 320, maxHeight: gameIsOn ? 100 : 0)
-                        .foregroundColor(Color("DevoeJadeGreen"))
-                        .cornerRadius(5)
+                    
+                    ZStack {
+                        Rectangle()
+                            .frame(maxWidth: 320, maxHeight: gameIsOn ? 100 : 0)
+                            .foregroundColor(Color("DevoeJadeGreen"))
+                            .cornerRadius(5)
+                        
+                        Text(gameIsOn ? "How much is 2 x 2?" : "")
+                            .font(.title2.bold())
+                    }
                     
                     Spacer()
                     
