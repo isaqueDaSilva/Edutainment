@@ -150,7 +150,7 @@ struct ContentView: View {
             
             VStack {
                 if gameIsOn == false {
-                    Text("Welcome to Edutainment")
+                    Text("Welcome to Edutainment 🤓")
                         .font(.title.bold())
                     
                     if showingSteps == false {
