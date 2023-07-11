@@ -128,7 +128,7 @@ struct ContentView: View {
                                 .cornerRadius(5)
                         } else if row == 3 {
                             if colum == 0 {
-                                Text(",")
+                                Image(systemName: "delete.left")
                                     .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
                                     .font(.title3.bold())
                                     .foregroundColor(.white)
@@ -180,7 +180,7 @@ struct ContentView: View {
                             .cornerRadius(5)
                         
                         Text(gameIsOn ? "How much is 2 x 2?" : "")
-                            .font(.title2.bold())
+                            .font(.title3.bold())
                     }
                     
                     Spacer()
