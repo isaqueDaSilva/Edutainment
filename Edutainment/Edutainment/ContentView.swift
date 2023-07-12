@@ -7,6 +7,21 @@
 
 import SwiftUI
 
+enum ButtonNumbers: String, CaseIterable {
+    case one = "1"
+    case two = "2"
+    case three = "3"
+    case four = "4"
+    case five = "5"
+    case six = "6"
+    case seven = "7"
+    case eight = "8"
+    case nine = "9"
+    case zero = "0"
+    case ok = "OK"
+    case delete
+}
+
 struct ContentView: View {
     @State private var showingSteps = false
     @State private var step = 1
@@ -22,9 +37,17 @@ struct ContentView: View {
     @State private var difficultyLevelSelected = "Easy"
     let difficultyLevel = ["Easy", "Medium", "Hard"]
     
+    let buttons: [[ButtonNumbers]] = [
+        [.one, .two, .three],
+        [.four, .five, .six],
+        [.seven, .eight, .nine],
+        [.delete, .zero, .ok]
+    ]
+    
     @State private var round = 1
     @State private var score = 0
     @State private var answer = 0
+    @State private var usedNumber = [Int]()
     
     @ViewBuilder var playButton: some View {
         Button("Play", action: {
@@ -114,46 +137,26 @@ struct ContentView: View {
     }
     
     @ViewBuilder var numberKeyboard: some View {
-        ForEach(0..<4) { row in
+        ForEach(buttons, id: \.self) { row in
             HStack {
-                ForEach(0..<3) { colum in
+                ForEach(row, id: \.self) { colum in
                     Button(action: {
                         
                     }, label: {
-                        if row < 3 {
-                            Text("\(row * 3 + colum + 1)")
+                        if colum != .delete {
+                            Text(colum.rawValue)
                                 .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
-                                .font(.title3.bold())
+                                .font(.title2.bold())
                                 .foregroundColor(.white)
                                 .background(Rectangle())
                                 .cornerRadius(5)
-                        } else if row == 3 {
-                            if colum == 0 {
-                                Image(systemName: "delete.left")
-                                    .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                                    .background(Rectangle())
-                                    .cornerRadius(5)
-                            }
-                            
-                            if colum == 1 {
-                                Text("0")
-                                    .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                                    .background(Rectangle())
-                                    .cornerRadius(5)
-                            }
-                            
-                            if colum == 2{
-                                Text("OK")
-                                    .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
-                                    .font(.title3.bold())
-                                    .foregroundColor(.white)
-                                    .background(Rectangle())
-                                    .cornerRadius(5)
-                            }
+                        } else {
+                            Image(systemName: "delete.left")
+                                .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
+                                .font(.title2.bold())
+                                .foregroundColor(.white)
+                                .background(Rectangle())
+                                .cornerRadius(5)
                         }
                     })
                 }
