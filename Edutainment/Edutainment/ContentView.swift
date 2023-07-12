@@ -254,6 +254,17 @@ struct ContentView: View {
             }
         }
     }
+    
+    func didTap(button: ButtonNumbers) {
+        switch button {
+        case .ok:
+            break
+        case .delete:
+            break
+        default :
+            let number = button.rawValue
+        }
+    }
 }
 
 
