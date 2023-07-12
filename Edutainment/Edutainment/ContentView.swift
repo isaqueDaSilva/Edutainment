@@ -24,6 +24,7 @@ struct ContentView: View {
     
     @State private var round = 1
     @State private var score = 0
+    @State private var answer = 0
     
     @ViewBuilder var playButton: some View {
         Button("Play", action: {
@@ -175,13 +176,25 @@ struct ContentView: View {
                     
                     ZStack {
                         Rectangle()
-                            .frame(maxWidth: 320, maxHeight: gameIsOn ? 100 : 0)
                             .foregroundColor(Color("DevoeJadeGreen"))
                             .cornerRadius(5)
-                        
-                        Text(gameIsOn ? "How much is 2 x 2?" : "")
-                            .font(.title3.bold())
+                        VStack {
+                            Spacer()
+                            
+                            Text(gameIsOn ? "How much is 2 x 2?" : "")
+                                .font(.title3.bold())
+                            
+                            HStack {
+                                Text("Your answer")
+                                Spacer()
+                                Text(String(answer))
+                            }
+                            .frame(maxWidth: gameIsOn ? 300 : 0, maxHeight: gameIsOn ? 100 : 0)
+                            
+                            Spacer()
+                        }
                     }
+                    .frame(maxWidth: gameIsOn ? 320 : 0, maxHeight: gameIsOn ? 100 : 0)
                     
                     Spacer()
                     
