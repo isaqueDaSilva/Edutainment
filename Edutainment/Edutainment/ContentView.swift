@@ -181,7 +181,7 @@ struct ContentView: View {
                         VStack {
                             Spacer()
                             
-                            Text(gameIsOn ? "How much is 2 x 2?" : "")
+                            Text(gameIsOn ? "How much is " : "")
                                 .font(.title3.bold())
                             
                             HStack {
