@@ -39,19 +39,21 @@ struct ContentView: View {
     
     @State private var difficultyLevelSelected: DifficultyLevel = .easy
     
-    let multiplier = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].shuffled()
-    var multiplying: [Int] {
-        var question = [Int]()
+    var multiplier: Int {
+        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].randomElement() ?? 0
+    }
+    var multiplying: Int {
+        var numbers = [Int]()
         
         if difficultyLevelSelected == .easy {
-            question = [1, 2, 5, 10]
+            numbers = [1, 2, 5, 10]
         } else if difficultyLevelSelected == .medium {
-            question = [3, 4, 6]
+            numbers = [3, 4, 6]
         } else if difficultyLevelSelected == .hard {
-            question = [7, 8, 9]
+            numbers = [7, 8, 9]
         }
         
-        return question.shuffled()
+        return numbers.randomElement() ?? 0
     }
     
     
@@ -281,7 +283,10 @@ struct ContentView: View {
             }
         }
     }
-
+    
+    func questions() {
+        
+    }
 }
 
 
