@@ -46,8 +46,8 @@ struct ContentView: View {
     
     @State private var round = 1
     @State private var score = 0
-    @State private var answer = 0
-    @State private var usedNumber = [Int]()
+    @State private var answer = "0"
+    @State private var showingResult = false
     
     @ViewBuilder var playButton: some View {
         Button("Play", action: {
@@ -141,7 +141,7 @@ struct ContentView: View {
             HStack {
                 ForEach(row, id: \.self) { colum in
                     Button(action: {
-                        
+                        didTap(button: colum)
                     }, label: {
                         if colum != .delete {
                             Text(colum.rawValue)
@@ -190,7 +190,7 @@ struct ContentView: View {
                             HStack {
                                 Text("Your answer")
                                 Spacer()
-                                Text(String(answer))
+                                Text(answer)
                             }
                             .frame(maxWidth: gameIsOn ? 300 : 0, maxHeight: gameIsOn ? 100 : 0)
                             
@@ -260,9 +260,18 @@ struct ContentView: View {
         case .ok:
             break
         case .delete:
-            break
+            answer.removeLast()
+            if answer.count == 0 {
+                answer = "0"
+            }
         default :
             let number = button.rawValue
+            
+            if answer == "0" {
+                answer = number
+            } else {
+                answer = "\(answer)\(number)"
+            }
         }
     }
 }
