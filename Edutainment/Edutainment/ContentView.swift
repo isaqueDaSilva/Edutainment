@@ -34,6 +34,7 @@ struct ContentView: View {
     @State private var gameIsOn = false
     @State private var numbersOfQuestionsSelected = 5
     @State private var difficultyLevelSelected: DifficultyLevel = .easy
+    @State private var question = ""
     @State private var showingResult = false
     @State private var alertTitle = ""
     @State private var alertMessage = ""
@@ -102,6 +103,7 @@ struct ContentView: View {
                     showingSteps = false
                     gameIsOn = true
                 }
+                questionGenerator()
             })
             .buttonStyle(.borderedProminent)
         }
@@ -200,7 +202,7 @@ struct ContentView: View {
                         VStack {
                             Spacer()
                             
-                            Text(gameIsOn ? "How much is \(multiplier)x\(multiplying)?" : "")
+                            Text(gameIsOn ? question : "")
                                 .font(.title3.bold())
                             
                             HStack {
@@ -219,6 +221,7 @@ struct ContentView: View {
                     Spacer()
                     
                     numberKeyboard
+                        .frame(maxWidth: gameIsOn ? 320 : 0)
                     
                     Spacer()
                 }
@@ -264,6 +267,7 @@ struct ContentView: View {
                         .background(.thinMaterial)
                         .cornerRadius(20)
                         .shadow(radius: 10)
+                        .padding()
                 }
                 gameView
                     .frame(maxWidth: .infinity, maxHeight: gameIsOn ? .infinity : 0)
@@ -289,6 +293,10 @@ struct ContentView: View {
                 answer = "\(answer)\(number)"
             }
         }
+    }
+    
+    func questionGenerator() {
+        question = "How much is \(multiplier) x \(multiplying)?"
     }
 }
 
