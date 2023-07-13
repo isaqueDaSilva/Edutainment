@@ -22,20 +22,38 @@ enum ButtonNumbers: String, CaseIterable {
     case delete
 }
 
+enum DifficultyLevel: String, CaseIterable {
+    case easy = "Easy"
+    case medium = "Medium"
+    case hard = "Hard"
+}
+
 struct ContentView: View {
     @State private var showingSteps = false
     @State private var step = 1
     
     @State private var gameIsOn = false
     
-    @State private var tableSelect = 1
-    let tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    
     @State private var numbersOfQuestionsSelected = 5
     let numbersOfQuestions = [5, 10, 20]
     
-    @State private var difficultyLevelSelected = "Easy"
-    let difficultyLevel = ["Easy", "Medium", "Hard"]
+    @State private var difficultyLevelSelected: DifficultyLevel = .easy
+    
+    let multiplier = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].shuffled()
+    var multiplying: [Int] {
+        var question = [Int]()
+        
+        if difficultyLevelSelected == .easy {
+            question = [1, 2, 5, 10]
+        } else if difficultyLevelSelected == .medium {
+            question = [3, 4, 6]
+        } else if difficultyLevelSelected == .hard {
+            question = [7, 8, 9]
+        }
+        
+        return question.shuffled()
+    }
+    
     
     let buttons: [[ButtonNumbers]] = [
         [.one, .two, .three],
@@ -88,13 +106,13 @@ struct ContentView: View {
             Spacer()
             
             if step == 1 {
-                Text("Select which multiplication table do you want to practice?")
+                Text("What difficulty level would you like to tackle?")
                     .font(.headline.bold())
                     .multilineTextAlignment(.center)
                 
-                Picker("Table", selection: $tableSelect) {
-                    ForEach(tables, id: \.self) {
-                        Text(String($0))
+                Picker("Difficulty Level", selection: $difficultyLevelSelected) {
+                    ForEach(DifficultyLevel.allCases, id: \.self) {
+                        Text($0.rawValue)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -111,23 +129,11 @@ struct ContentView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding()
-            } else if step == 3 {
-                Text("What difficulty level would you like to tackle?")
-                    .font(.headline.bold())
-                    .multilineTextAlignment(.center)
-                
-                Picker("Difficulty Level", selection: $difficultyLevelSelected) {
-                    ForEach(difficultyLevel, id: \.self) {
-                        Text($0)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
             }
             
             Spacer()
             
-            if step < 3 {
+            if step < 2 {
                 stepButton
             } else {
                 startButton
@@ -184,11 +190,12 @@ struct ContentView: View {
                         VStack {
                             Spacer()
                             
-                            Text(gameIsOn ? "How much is " : "")
+                            Text(gameIsOn ? "How much is ?" : "")
                                 .font(.title3.bold())
                             
                             HStack {
                                 Text("Your answer")
+                                    .font(.headline.bold())
                                 Spacer()
                                 Text(answer)
                             }
@@ -258,7 +265,7 @@ struct ContentView: View {
     func didTap(button: ButtonNumbers) {
         switch button {
         case .ok:
-            break
+            showingResult = true
         case .delete:
             answer.removeLast()
             if answer.count == 0 {
@@ -274,6 +281,7 @@ struct ContentView: View {
             }
         }
     }
+
 }
 
 
