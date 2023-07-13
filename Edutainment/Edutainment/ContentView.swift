@@ -31,17 +31,31 @@ enum DifficultyLevel: String, CaseIterable {
 struct ContentView: View {
     @State private var showingSteps = false
     @State private var step = 1
-    
     @State private var gameIsOn = false
-    
     @State private var numbersOfQuestionsSelected = 5
+    @State private var difficultyLevelSelected: DifficultyLevel = .easy
+    @State private var showingResult = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var round = 1
+    @State private var score = 0
+    @State private var answer = "0"
+    
     let numbersOfQuestions = [5, 10, 20]
     
-    @State private var difficultyLevelSelected: DifficultyLevel = .easy
-    
     var multiplier: Int {
-        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].randomElement() ?? 0
+        var numbers = [Int]()
+        
+        if difficultyLevelSelected == .easy {
+            numbers = [1, 2, 3, 4, 5, 10, 20]
+        } else if difficultyLevelSelected == .medium {
+            numbers = [6, 7, 8, 15]
+        } else if difficultyLevelSelected == .hard {
+            numbers = [9, 11, 13, 14, 16, 17, 18, 19]
+        }
+        return numbers.randomElement() ?? 0
     }
+    
     var multiplying: Int {
         var numbers = [Int]()
         
@@ -56,18 +70,12 @@ struct ContentView: View {
         return numbers.randomElement() ?? 0
     }
     
-    
     let buttons: [[ButtonNumbers]] = [
         [.one, .two, .three],
         [.four, .five, .six],
         [.seven, .eight, .nine],
         [.delete, .zero, .ok]
     ]
-    
-    @State private var round = 1
-    @State private var score = 0
-    @State private var answer = "0"
-    @State private var showingResult = false
     
     @ViewBuilder var playButton: some View {
         Button("Play", action: {
@@ -99,7 +107,7 @@ struct ContentView: View {
         }
     }
     
-    @ViewBuilder var choices: some View {
+    @ViewBuilder var chooses: some View {
         VStack {
             Spacer()
             Text("Before starting the game:")
@@ -192,7 +200,7 @@ struct ContentView: View {
                         VStack {
                             Spacer()
                             
-                            Text(gameIsOn ? "How much is ?" : "")
+                            Text(gameIsOn ? "How much is \(multiplier)x\(multiplying)?" : "")
                                 .font(.title3.bold())
                             
                             HStack {
@@ -246,13 +254,12 @@ struct ContentView: View {
                     
                     if showingSteps == false {
                         Text("The perfect space for fun and learning 😉")
-                            .frame(width: 300)
                             .font(.headline.bold())
                             .multilineTextAlignment(.center)
                         playButton
                     }
                     
-                    choices
+                    chooses
                         .frame(maxWidth: 350, maxHeight: showingSteps ? 250 : 0)
                         .background(.thinMaterial)
                         .cornerRadius(20)
@@ -282,10 +289,6 @@ struct ContentView: View {
                 answer = "\(answer)\(number)"
             }
         }
-    }
-    
-    func questions() {
-        
     }
 }
 
