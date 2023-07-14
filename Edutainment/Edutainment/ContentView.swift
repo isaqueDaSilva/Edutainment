@@ -36,40 +36,13 @@ struct ContentView: View {
     @State private var difficultyLevelSelected: DifficultyLevel = .easy
     @State private var question = ""
     @State private var showingResult = false
-    @State private var alertTitle = ""
-    @State private var alertMessage = ""
+    @State private var resultTitle = ""
+    @State private var resultMessage = ""
     @State private var round = 1
     @State private var score = 0
     @State private var answer = "0"
     
     let numbersOfQuestions = [5, 10, 20]
-    
-    var multiplier: Int {
-        var numbers = [Int]()
-        
-        if difficultyLevelSelected == .easy {
-            numbers = [1, 2, 3, 4, 5, 10, 20]
-        } else if difficultyLevelSelected == .medium {
-            numbers = [6, 7, 8, 15]
-        } else if difficultyLevelSelected == .hard {
-            numbers = [9, 11, 13, 14, 16, 17, 18, 19]
-        }
-        return numbers.randomElement() ?? 0
-    }
-    
-    var multiplying: Int {
-        var numbers = [Int]()
-        
-        if difficultyLevelSelected == .easy {
-            numbers = [1, 2, 5, 10]
-        } else if difficultyLevelSelected == .medium {
-            numbers = [3, 4, 6]
-        } else if difficultyLevelSelected == .hard {
-            numbers = [7, 8, 9]
-        }
-        
-        return numbers.randomElement() ?? 0
-    }
     
     let buttons: [[ButtonNumbers]] = [
         [.one, .two, .three],
@@ -77,6 +50,47 @@ struct ContentView: View {
         [.seven, .eight, .nine],
         [.delete, .zero, .ok]
     ]
+    
+    var questionChecker: String {
+        var multiplier: Int {
+            var numbers = [Int]()
+            
+            if difficultyLevelSelected == .easy {
+                numbers = [1, 2, 3, 4, 5, 10, 20]
+            } else if difficultyLevelSelected == .medium {
+                numbers = [6, 7, 8, 15]
+            } else if difficultyLevelSelected == .hard {
+                numbers = [9, 11, 13, 14, 16, 17, 18, 19]
+            }
+            return numbers.randomElement() ?? 0
+        }
+        
+        var multiplying: Int {
+            var numbers = [Int]()
+            
+            if difficultyLevelSelected == .easy {
+                numbers = [1, 2, 5, 10]
+            } else if difficultyLevelSelected == .medium {
+                numbers = [3, 4, 6]
+            } else if difficultyLevelSelected == .hard {
+                numbers = [7, 8, 9]
+            }
+            
+            return numbers.randomElement() ?? 0
+        }
+        
+        
+        if answer == String(multiplier * multiplying) {
+            resultTitle = "Good Job 😉"
+            resultMessage = "That's right, you are strongly mastering the multiplication table 😉"
+            score += 1
+        } else if answer != String(multiplier * multiplying) {
+            resultTitle = "Oh no 😔"
+            resultMessage = "This answer doesn't match the result which is \(multiplier * multiplying)!\nBut don't get discouraged with practice you can get the hang of it 😉"
+        }
+        
+        return question
+    }
     
     @ViewBuilder var playButton: some View {
         Button("Play", action: {
@@ -103,7 +117,7 @@ struct ContentView: View {
                     showingSteps = false
                     gameIsOn = true
                 }
-                questionGenerator()
+              //  questionGenerator()
             })
             .buttonStyle(.borderedProminent)
         }
@@ -256,7 +270,7 @@ struct ContentView: View {
                         .font(.title.bold())
                     
                     if showingSteps == false {
-                        Text("The perfect space for fun and learning 😉")
+                        Text("The perfect space for fun and learning at the same time😉")
                             .font(.headline.bold())
                             .multilineTextAlignment(.center)
                         playButton
@@ -272,6 +286,22 @@ struct ContentView: View {
                 gameView
                     .frame(maxWidth: .infinity, maxHeight: gameIsOn ? .infinity : 0)
             }
+        }
+        .alert(resultTitle, isPresented: $showingResult) {
+            if round < numbersOfQuestionsSelected {
+                Button("OK", action: {
+                 //   questionGenerator()
+                    round += 1
+                })
+            } else if round == numbersOfQuestionsSelected {
+                Button("New Game", action: {
+                    round = 1
+                    score = 0
+                    var newChooses = chooses
+                })
+            }
+        } message: {
+            Text(resultMessage)
         }
     }
     
@@ -293,10 +323,6 @@ struct ContentView: View {
                 answer = "\(answer)\(number)"
             }
         }
-    }
-    
-    func questionGenerator() {
-        question = "How much is \(multiplier) x \(multiplying)?"
     }
 }
 
