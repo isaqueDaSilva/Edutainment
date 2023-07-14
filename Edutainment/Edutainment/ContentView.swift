@@ -51,45 +51,31 @@ struct ContentView: View {
         [.delete, .zero, .ok]
     ]
     
-    var questionChecker: String {
-        var multiplier: Int {
-            var numbers = [Int]()
-            
-            if difficultyLevelSelected == .easy {
-                numbers = [1, 2, 3, 4, 5, 10, 20]
-            } else if difficultyLevelSelected == .medium {
-                numbers = [6, 7, 8, 15]
-            } else if difficultyLevelSelected == .hard {
-                numbers = [9, 11, 13, 14, 16, 17, 18, 19]
-            }
-            return numbers.randomElement() ?? 0
+    var multiplier: Int {
+        var numbers = [Int]()
+        
+        if difficultyLevelSelected == .easy {
+            numbers = [1, 2, 3, 4, 5, 10, 20]
+        } else if difficultyLevelSelected == .medium {
+            numbers = [6, 7, 8, 15]
+        } else if difficultyLevelSelected == .hard {
+            numbers = [9, 11, 13, 14, 16, 17, 18, 19]
+        }
+        return numbers.randomElement() ?? 0
+    }
+    
+    var multiplying: Int {
+        var numbers = [Int]()
+        
+        if difficultyLevelSelected == .easy {
+            numbers = [1, 2, 5, 10]
+        } else if difficultyLevelSelected == .medium {
+            numbers = [3, 4, 6]
+        } else if difficultyLevelSelected == .hard {
+            numbers = [7, 8, 9]
         }
         
-        var multiplying: Int {
-            var numbers = [Int]()
-            
-            if difficultyLevelSelected == .easy {
-                numbers = [1, 2, 5, 10]
-            } else if difficultyLevelSelected == .medium {
-                numbers = [3, 4, 6]
-            } else if difficultyLevelSelected == .hard {
-                numbers = [7, 8, 9]
-            }
-            
-            return numbers.randomElement() ?? 0
-        }
-        
-        
-        if answer == String(multiplier * multiplying) {
-            resultTitle = "Good Job 😉"
-            resultMessage = "That's right, you are strongly mastering the multiplication table 😉"
-            score += 1
-        } else if answer != String(multiplier * multiplying) {
-            resultTitle = "Oh no 😔"
-            resultMessage = "This answer doesn't match the result which is \(multiplier * multiplying)!\nBut don't get discouraged with practice you can get the hang of it 😉"
-        }
-        
-        return question
+        return numbers.randomElement() ?? 0
     }
     
     @ViewBuilder var playButton: some View {
@@ -117,7 +103,7 @@ struct ContentView: View {
                     showingSteps = false
                     gameIsOn = true
                 }
-              //  questionGenerator()
+                questionGenerator()
             })
             .buttonStyle(.borderedProminent)
         }
@@ -218,7 +204,6 @@ struct ContentView: View {
                             
                             Text(gameIsOn ? question : "")
                                 .font(.title3.bold())
-                            
                             HStack {
                                 Text("Your answer")
                                     .font(.headline.bold())
@@ -297,7 +282,7 @@ struct ContentView: View {
                 Button("New Game", action: {
                     round = 1
                     score = 0
-                    var newChooses = chooses
+//                    var newChooses = chooses
                 })
             }
         } message: {
@@ -309,6 +294,7 @@ struct ContentView: View {
         switch button {
         case .ok:
             showingResult = true
+            questionGenerator()
         case .delete:
             answer.removeLast()
             if answer.count == 0 {
@@ -324,7 +310,25 @@ struct ContentView: View {
             }
         }
     }
+    
+    func questionGenerator() {
+        var number1 = multiplier
+        var number2 = multiplying
+        
+        question = "How much is \(number1) x \(number2)?"
+        
+        if answer == String(number1 * number2) {
+            resultTitle = "Good Job 😉"
+            resultMessage = "That's right, you are strongly mastering the multiplication table 😉"
+            score += 1
+        } else if answer != String(number1 * number2) {
+            resultTitle = "Oh no 😔"
+            resultMessage = "This answer doesn't match the result which is \(multiplier * multiplying)!\nBut don't get discouraged with practice you can get the hang of it 😉"
+        }
+    }
 }
+
+
 
 
 struct ContentView_Previews: PreviewProvider {
