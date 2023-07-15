@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct GameView: View {
-    @State private var gameIsOn = true
+    @State private var round = 1
+    @State private var score = 0
     
     let buttons: [[ButtonNumbers]] = [
         [.one, .two, .three],
@@ -20,10 +21,9 @@ struct GameView: View {
     var body: some View {
         VStack {
             Spacer()
-            
             ZStack {
                 Rectangle()
-                    .frame(maxWidth: gameIsOn ? 360 : 0, maxHeight: gameIsOn ? 550 : 0)
+                    .frame(maxWidth: 400, maxHeight: 550)
                     .foregroundColor(Color("MidnightBlue"))
                     .cornerRadius(20)
                     .shadow(radius: 10)
@@ -31,10 +31,29 @@ struct GameView: View {
                 VStack {
                     Spacer()
                     
-                    Rectangle()
-                        .frame(maxWidth: gameIsOn ? 320 : 0, maxHeight: gameIsOn ? 100 : 0)
-                        .foregroundColor(Color("DevoeJadeGreen"))
-                        .cornerRadius(10)
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(Color("DevoeJadeGreen"))
+                            .cornerRadius(5)
+                        VStack {
+                            Spacer()
+                            
+                            Text("Teste")
+                                .font(.title3.bold())
+                            HStack {
+                                Text("Your answer:")
+                                    .font(.headline.bold())
+                                Spacer()
+                                Text("0")
+                            }
+                            .frame(maxWidth: 300, maxHeight: 100)
+                            
+                            Spacer()
+                        }
+                    }
+                    .frame(maxWidth: 320, maxHeight: 100)
+                    
+                    Spacer()
                     
                     ForEach(buttons, id: \.self) { row in
                         HStack {
@@ -44,14 +63,14 @@ struct GameView: View {
                                 }, label: {
                                     if colum != .delete {
                                         Text(colum.rawValue)
-                                            .frame(maxWidth: gameIsOn ? 100 : 0, maxHeight: gameIsOn ? 80 : 0)
+                                            .frame(maxWidth: 100, maxHeight: 80)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
                                             .cornerRadius(5)
                                     } else {
                                         Image(systemName: "delete.left")
-                                            .frame(maxWidth: gameIsOn ? 100 : 0, maxHeight: gameIsOn ? 80 : 0)
+                                            .frame(maxWidth: 100, maxHeight: 80)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
@@ -61,13 +80,32 @@ struct GameView: View {
                             }
                         }
                     }
+                    
                     Spacer()
                 }
+                .frame(maxWidth: 400, maxHeight: 550)
             }
+            
+            Spacer()
+            
+            HStack {
+                Text("Round: \(round)")
+                    .font(.title2.bold())
+                
+                Spacer()
+                
+                Text("Score: \(score)")
+                    .font(.title2.bold())
+            }
+            
             Spacer()
         }
+        .padding()
     }
 }
+
+
+
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
