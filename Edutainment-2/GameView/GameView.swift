@@ -10,6 +10,8 @@ import SwiftUI
 struct GameView: View {
     @State private var round = 1
     @State private var score = 0
+    @State private var question = "How Much is 2 x 2"
+    @State private var answer = "4"
     
     let buttons: [[ButtonNumbers]] = [
         [.one, .two, .three],
@@ -17,7 +19,6 @@ struct GameView: View {
         [.seven, .eight, .nine],
         [.delete, .zero, .ok]
     ]
-    
     var body: some View {
         VStack {
             Spacer()
@@ -38,13 +39,13 @@ struct GameView: View {
                         VStack {
                             Spacer()
                             
-                            Text("Teste")
+                            Text(question)
                                 .font(.title3.bold())
                             HStack {
                                 Text("Your answer:")
                                     .font(.headline.bold())
                                 Spacer()
-                                Text("0")
+                                Text(answer)
                             }
                             .frame(maxWidth: 300, maxHeight: 100)
                             
