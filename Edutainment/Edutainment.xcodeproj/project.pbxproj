@@ -14,6 +14,7 @@
 		7E8A49892A5CE76C00C1ED5C /* EdutainmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8A49882A5CE76C00C1ED5C /* EdutainmentTests.swift */; };
 		7E8A49932A5CE76C00C1ED5C /* EdutainmentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8A49922A5CE76C00C1ED5C /* EdutainmentUITests.swift */; };
 		7E8A49952A5CE76C00C1ED5C /* EdutainmentUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8A49942A5CE76C00C1ED5C /* EdutainmentUITestsLaunchTests.swift */; };
+		7EF954692A6357CA005123E8 /* TextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF954682A6357CA005123E8 /* TextModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		7E8A498E2A5CE76C00C1ED5C /* EdutainmentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EdutainmentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E8A49922A5CE76C00C1ED5C /* EdutainmentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdutainmentUITests.swift; sourceTree = "<group>"; };
 		7E8A49942A5CE76C00C1ED5C /* EdutainmentUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdutainmentUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7EF954682A6357CA005123E8 /* TextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			children = (
 				7E8A49772A5CE76B00C1ED5C /* EdutainmentApp.swift */,
 				7E8A49792A5CE76B00C1ED5C /* ContentView.swift */,
+				7EF954682A6357CA005123E8 /* TextModifier.swift */,
 				7E8A497B2A5CE76C00C1ED5C /* Assets.xcassets */,
 				7E8A497D2A5CE76C00C1ED5C /* Preview Content */,
 			);
@@ -259,6 +262,7 @@
 			files = (
 				7E8A497A2A5CE76B00C1ED5C /* ContentView.swift in Sources */,
 				7E8A49782A5CE76B00C1ED5C /* EdutainmentApp.swift in Sources */,
+				7EF954692A6357CA005123E8 /* TextModifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
