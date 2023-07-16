@@ -166,10 +166,10 @@ struct ContentView: View {
             
             VStack {
                 if gameIsOn == false {
-                    Text(gameIsOn == false ? "Welcome to Edutainment" : "")
-                        .font(.title.bold())
-                    
                     if showingSteps == false {
+                        Text("Welcome to Edutainment")
+                            .font(.title.bold())
+                        
                         TextModifier(text: "The perfect space for fun and learning at the same time 😉")
                         
                         Button("Play", action: {
@@ -181,6 +181,10 @@ struct ContentView: View {
                         .buttonStyle(.borderedProminent)
                     }
                     
+                    Text(showingSteps ? "Edutainment 🔢" : "")
+                         
+                        .font(.title.bold())
+                    
                     choices
                         .frame(maxWidth: 400, maxHeight: showingSteps ? 300 : 0)
                 }
@@ -191,12 +195,17 @@ struct ContentView: View {
             .padding()
         }
         .alert(resultTitle, isPresented: $showingResults) {
-            Button(step < numberOfQuestionsSelected ? "Next" : "New Game", action: {
-                if step < numberOfQuestionsSelected {
+            Button(round < numberOfQuestionsSelected ? "Next" : "New Game", action: {
+                if round < numberOfQuestionsSelected {
                     round += 1
-                } else {
-                    score = 0
-                    round = 1
+                    answer = "0"
+                    questionGenerator()
+                } else if round == numberOfQuestionsSelected {
+                    withAnimation {
+                        gameIsOn = false
+                        showingSteps = true
+                        step = 1
+                    }
                 }
             })
         } message: {
@@ -220,7 +229,6 @@ struct ContentView: View {
     }
     
     func questionChecker() {
-        
         if round < numberOfQuestionsSelected {
             if answer == String(multiplier * multiplying) {
                 resultTitle = "Good Jobs 😉"
@@ -231,6 +239,9 @@ struct ContentView: View {
                 resultMessage = "Your answer doesn't match the correct value which is \(multiplier * multiplying)!\nBut don't be discouraged, with more tries you'll get the hang of it 😉"
             }
         } else {
+            if answer == String(multiplier * multiplying) {
+                score += 1
+            }
             resultTitle = "Game Over"
             resultMessage = "Final score: \(score) points\nKeep practicing, so you'll get better and better 😉"
         }
@@ -240,12 +251,14 @@ struct ContentView: View {
         switch button {
         case .ok :
             showingResults = true
+            questionChecker()
         case .delete :
-            if answer.count > 0 {
-                answer.removeLast()
-            } else {
+            answer.removeLast()
+            
+            if answer.count == 0 {
                 answer = "0"
             }
+            
         default :
             let number = button.rawValue
             
