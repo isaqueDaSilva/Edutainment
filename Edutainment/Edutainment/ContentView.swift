@@ -81,8 +81,6 @@ struct ContentView: View {
     //Game view
     @ViewBuilder var gameView: some View {
         VStack {
-            Spacer()
-            
             ZStack {
                 Rectangle()
                     .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
@@ -93,7 +91,7 @@ struct ContentView: View {
                 VStack {
                     ZStack {
                         Rectangle()
-                            .frame(maxWidth: 330, maxHeight: gameIsOn ? 100 : 0)
+                            .frame(maxWidth: 330, maxHeight: gameIsOn ? 90 : 0)
                             .foregroundColor(Color("DevoeJadeGreen"))
                             .cornerRadius(10)
                         
@@ -112,23 +110,24 @@ struct ContentView: View {
                         }
                         .padding()
                     }
+                    .frame(maxWidth: 320, maxHeight: gameIsOn ? 100 : 0)
                     
                     ForEach(buttons, id: \.self) { row in
                         HStack {
-                            ForEach(row, id: \.self) { colums in
+                            ForEach(row, id: \.self) { colum in
                                 Button(action: {
                                     
                                 }, label: {
-                                    if colums != .delete {
-                                        Text(colums.rawValue)
-                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 100 : 0)
+                                    if colum != .delete {
+                                        Text(colum.rawValue)
+                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
                                             .cornerRadius(5)
                                     } else {
                                         Image(systemName: "delete.left")
-                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 100 : 0)
+                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
@@ -140,7 +139,6 @@ struct ContentView: View {
                     }
                 }
             }
-            
             HStack {
                 Text(gameIsOn ? "Round: \(round)" : "")
                     .font(.title2.bold())
@@ -150,7 +148,6 @@ struct ContentView: View {
                 Text(gameIsOn ? "Score: \(score)/\(numberOfQuestionsSelected)" : "")
                     .font(.title2.bold())
             }
-            
             Spacer()
         }
     }
