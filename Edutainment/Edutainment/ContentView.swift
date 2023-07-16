@@ -13,8 +13,17 @@ struct ContentView: View {
     @State private var step = 0
     @State private var difficultyLevel: DifficultyLevel = .easy
     @State private var numberOfQuestionsSelected = 5
+    @State private var round = 1
+    @State private var score = 0
     
     let numberOfQuestions = [5, 10, 20]
+    
+    let buttons: [[ButtonNumbers]] = [
+        [.one, .two, .three],
+        [.four, .five, .six],
+        [.seven, .eight, .nine],
+        [.delete, .zero, .ok]
+    ]
     
     //choices view
     @ViewBuilder var choices: some View {
@@ -52,8 +61,10 @@ struct ContentView: View {
                 if step == 1 {
                     step += 1
                 } else {
-                    showingSteps = false
-                    gameIsOn = true
+                    withAnimation {
+                        showingSteps = false
+                        gameIsOn = true
+                    }
                 }
             })
             .buttonStyle(.borderedProminent)
@@ -67,29 +78,111 @@ struct ContentView: View {
         
     }
     
+    //Game view
+    @ViewBuilder var gameView: some View {
+        VStack {
+            Spacer()
+            
+            ZStack {
+                Rectangle()
+                    .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
+                    .foregroundColor(Color("MidnightBlue"))
+                    .cornerRadius(20)
+                    .shadow(radius: 10)
+                
+                VStack {
+                    ZStack {
+                        Rectangle()
+                            .frame(maxWidth: 330, maxHeight: gameIsOn ? 100 : 0)
+                            .foregroundColor(Color("DevoeJadeGreen"))
+                            .cornerRadius(10)
+                        
+                        VStack {
+                            Spacer()
+                            Text(gameIsOn ? "How Much is 2 x 2?" : "")
+                                .font(.title3.bold())
+                            Spacer()
+                            Spacer()
+                            HStack {
+                                TextModifier(text: gameIsOn ? "Your Answer:" : "")
+                                Spacer()
+                                TextModifier(text: gameIsOn ? "4" : "")
+                            }
+                            Spacer()
+                        }
+                        .padding()
+                    }
+                    
+                    ForEach(buttons, id: \.self) { row in
+                        HStack {
+                            ForEach(row, id: \.self) { colums in
+                                Button(action: {
+                                    
+                                }, label: {
+                                    if colums != .delete {
+                                        Text(colums.rawValue)
+                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 100 : 0)
+                                            .font(.title2.bold())
+                                            .foregroundColor(.white)
+                                            .background(Rectangle())
+                                            .cornerRadius(5)
+                                    } else {
+                                        Image(systemName: "delete.left")
+                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 100 : 0)
+                                            .font(.title2.bold())
+                                            .foregroundColor(.white)
+                                            .background(Rectangle())
+                                            .cornerRadius(5)
+                                    }
+                                })
+                            }
+                        }
+                    }
+                }
+            }
+            
+            HStack {
+                Text(gameIsOn ? "Round: \(round)" : "")
+                    .font(.title2.bold())
+                
+                Spacer()
+                
+                Text(gameIsOn ? "Score: \(score)/\(numberOfQuestionsSelected)" : "")
+                    .font(.title2.bold())
+            }
+            
+            Spacer()
+        }
+    }
+    
     var body: some View {
         ZStack {
             LinearGradient(colors: [.blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
             
             VStack {
-                Text(gameIsOn == false ? "Welcome to Edutainment" : "")
-                    .font(.title.bold())
-                
-                if showingSteps == false && gameIsOn == false {
-                    TextModifier(text: "The perfect space for fun and learning at the same time 😉")
+                if gameIsOn == false {
+                    Text(gameIsOn == false ? "Welcome to Edutainment" : "")
+                        .font(.title.bold())
                     
-                    Button("Play", action: {
-                        withAnimation {
-                            showingSteps = true
-                            step = 1
-                        }
-                    })
-                    .buttonStyle(.borderedProminent)
+                    if showingSteps == false {
+                        TextModifier(text: "The perfect space for fun and learning at the same time 😉")
+                        
+                        Button("Play", action: {
+                            withAnimation {
+                                showingSteps = true
+                                step = 1
+                            }
+                        })
+                        .buttonStyle(.borderedProminent)
+                    }
+                    
+                    choices
+                        .frame(maxWidth: 400, maxHeight: showingSteps ? 300 : 0)
                 }
                 
-                choices
-                    .frame(maxWidth: 400, maxHeight: showingSteps ? 300 : 0)
+                gameView
+                    .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
             }
             .padding()
         }
