@@ -100,7 +100,7 @@ struct ContentView: View {
                     
                     ZStack {
                         Rectangle()
-                            .frame(maxWidth: 330, maxHeight: gameIsOn ? 90 : 0)
+                            .frame(maxWidth: 330, maxHeight: gameIsOn ? 95 : 0)
                             .foregroundColor(Color("DevoeJadeGreen"))
                             .cornerRadius(10)
                         
@@ -119,9 +119,7 @@ struct ContentView: View {
                         }
                         .padding()
                     }
-                    .frame(maxWidth: 330, maxHeight: gameIsOn ? 100 : 0)
-                    
-                    
+                    .frame(maxWidth: 330, maxHeight: gameIsOn ? 95 : 0)
                     
                     ForEach(buttons, id: \.self) { row in
                         HStack {
@@ -131,14 +129,14 @@ struct ContentView: View {
                                 }, label: {
                                     if colum != .delete {
                                         Text(colum.rawValue)
-                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 90 : 0)
+                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 95 : 0)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
                                             .cornerRadius(5)
                                     } else {
                                         Image(systemName: "delete.left")
-                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 90 : 0)
+                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 95 : 0)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
