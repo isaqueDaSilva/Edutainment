@@ -96,6 +96,8 @@ struct ContentView: View {
                     .shadow(radius: 10)
                 
                 VStack {
+                    Spacer()
+                    
                     ZStack {
                         Rectangle()
                             .frame(maxWidth: 330, maxHeight: gameIsOn ? 90 : 0)
@@ -117,7 +119,9 @@ struct ContentView: View {
                         }
                         .padding()
                     }
-                    .frame(maxWidth: 320, maxHeight: gameIsOn ? 100 : 0)
+                    .frame(maxWidth: 330, maxHeight: gameIsOn ? 100 : 0)
+                    
+                    
                     
                     ForEach(buttons, id: \.self) { row in
                         HStack {
@@ -127,14 +131,14 @@ struct ContentView: View {
                                 }, label: {
                                     if colum != .delete {
                                         Text(colum.rawValue)
-                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
+                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 90 : 0)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
                                             .cornerRadius(5)
                                     } else {
                                         Image(systemName: "delete.left")
-                                            .frame(maxWidth: 100, maxHeight: gameIsOn ? 80 : 0)
+                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 90 : 0)
                                             .font(.title2.bold())
                                             .foregroundColor(.white)
                                             .background(Rectangle())
@@ -144,18 +148,9 @@ struct ContentView: View {
                             }
                         }
                     }
+                    Spacer()
                 }
             }
-            HStack {
-                Text(gameIsOn ? "Round: \(round)" : "")
-                    .font(.title2.bold())
-                
-                Spacer()
-                
-                Text(gameIsOn ? "Score: \(score)/\(numberOfQuestionsSelected)" : "")
-                    .font(.title2.bold())
-            }
-            Spacer()
         }
     }
     
@@ -191,6 +186,16 @@ struct ContentView: View {
                 
                 gameView
                     .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
+                
+                HStack {
+                    Text(gameIsOn ? "Round: \(round)" : "")
+                        .font(.title2.bold())
+                    
+                    Spacer()
+                    
+                    Text(gameIsOn ? "Score: \(score)/\(numberOfQuestionsSelected)" : "")
+                        .font(.title2.bold())
+                }
             }
             .padding()
         }
@@ -202,6 +207,8 @@ struct ContentView: View {
                     questionGenerator()
                 } else if round == numberOfQuestionsSelected {
                     withAnimation {
+                        round = 1
+                        score = 0
                         gameIsOn = false
                         showingSteps = true
                         step = 1
