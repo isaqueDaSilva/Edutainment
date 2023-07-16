@@ -15,6 +15,12 @@ struct ContentView: View {
     @State private var numberOfQuestionsSelected = 5
     @State private var round = 1
     @State private var score = 0
+    @State private var multiplier = 1
+    @State private var multiplying = 2
+    @State private var answer = "0"
+    @State private var showingResults = false
+    @State private var resultTitle = ""
+    @State private var resultMessage = ""
     
     let numberOfQuestions = [5, 10, 20]
     
@@ -64,6 +70,7 @@ struct ContentView: View {
                     withAnimation {
                         showingSteps = false
                         gameIsOn = true
+                        questionGenerator()
                     }
                 }
             })
@@ -97,14 +104,14 @@ struct ContentView: View {
                         
                         VStack {
                             Spacer()
-                            Text(gameIsOn ? "How Much is 2 x 2?" : "")
+                            Text(gameIsOn ? "How Much is \(multiplier) x \(multiplying)?" : "")
                                 .font(.title3.bold())
                             Spacer()
                             Spacer()
                             HStack {
                                 TextModifier(text: gameIsOn ? "Your Answer:" : "")
                                 Spacer()
-                                TextModifier(text: gameIsOn ? "4" : "")
+                                TextModifier(text: gameIsOn ? answer : "")
                             }
                             Spacer()
                         }
@@ -182,6 +189,51 @@ struct ContentView: View {
                     .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
             }
             .padding()
+        }
+        .alert(resultTitle, isPresented: $showingResults) {
+            Button(step < numberOfQuestionsSelected ? "Next" : "New Game", action: {
+                if step < numberOfQuestionsSelected {
+                    score += 1
+                    round += 1
+                } else {
+                    score = 0
+                    round = 1
+                }
+            })
+        } message: {
+            Text(resultMessage)
+        }
+    }
+    
+    func questionGenerator() {
+        if difficultyLevel == .easy {
+            multiplier = Int.random(in: 1...10)
+            multiplying = Int.random(in: 1...10)
+        }
+        if difficultyLevel == .medium {
+            multiplier = Int.random(in: 11...20)
+            multiplying = Int.random(in: 11...20)
+        }
+        if difficultyLevel == .hard {
+            multiplier = Int.random(in: 21...100)
+            multiplying = Int.random(in: 21...100)
+        }
+    }
+    
+    func questionChecker() {
+        
+        if round < numberOfQuestionsSelected {
+            if answer == String(multiplier * multiplying) {
+                resultTitle = "Good Jobs 😉"
+                resultMessage = "You really are becoming the king of the tables 😎"
+            } else {
+                resultTitle = "Ohh no... 😔"
+                resultMessage = "Your answer doesn't match the correct value which is \(multiplier * multiplying)!\nBut don't be discouraged, with more tries you'll get the hang of it 😉"
+                round += 1
+            }
+        } else {
+            resultTitle = "Game Over"
+            resultMessage = "Final score: \(score) points\nKeep practicing, so you'll get better and better 😉"
         }
     }
 }
