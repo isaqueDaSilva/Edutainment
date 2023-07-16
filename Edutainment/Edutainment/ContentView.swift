@@ -123,7 +123,7 @@ struct ContentView: View {
                         HStack {
                             ForEach(row, id: \.self) { colum in
                                 Button(action: {
-                                    
+                                    didTap(button: colum)
                                 }, label: {
                                     if colum != .delete {
                                         Text(colum.rawValue)
@@ -193,7 +193,6 @@ struct ContentView: View {
         .alert(resultTitle, isPresented: $showingResults) {
             Button(step < numberOfQuestionsSelected ? "Next" : "New Game", action: {
                 if step < numberOfQuestionsSelected {
-                    score += 1
                     round += 1
                 } else {
                     score = 0
@@ -226,14 +225,35 @@ struct ContentView: View {
             if answer == String(multiplier * multiplying) {
                 resultTitle = "Good Jobs 😉"
                 resultMessage = "You really are becoming the king of the tables 😎"
+                score += 1
             } else {
                 resultTitle = "Ohh no... 😔"
                 resultMessage = "Your answer doesn't match the correct value which is \(multiplier * multiplying)!\nBut don't be discouraged, with more tries you'll get the hang of it 😉"
-                round += 1
             }
         } else {
             resultTitle = "Game Over"
             resultMessage = "Final score: \(score) points\nKeep practicing, so you'll get better and better 😉"
+        }
+    }
+    
+    func didTap(button: ButtonNumbers) {
+        switch button {
+        case .ok :
+            showingResults = true
+        case .delete :
+            if answer.count > 0 {
+                answer.removeLast()
+            } else {
+                answer = "0"
+            }
+        default :
+            let number = button.rawValue
+            
+            if answer == "0" {
+                answer = number
+            } else {
+                answer = "\(answer)\(number)"
+            }
         }
     }
 }
