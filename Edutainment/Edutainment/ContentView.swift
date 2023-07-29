@@ -87,66 +87,70 @@ struct ContentView: View {
     
     //Game view
     @ViewBuilder var gameView: some View {
-        VStack {
-            ZStack {
-                Rectangle()
-                    .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
-                    .foregroundColor(Color("MidnightBlue"))
-                    .cornerRadius(20)
-                    .shadow(radius: 10)
-                
-                VStack {
-                    Spacer()
+        GeometryReader { geo in
+            VStack {
+                Spacer()
+                ZStack {
+                    Rectangle()
+                        .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
+                        .foregroundColor(Color("MidnightBlue"))
+                        .cornerRadius(20)
+                        .shadow(radius: 10)
                     
-                    ZStack {
-                        Rectangle()
-                            .frame(maxWidth: 330, maxHeight: gameIsOn ? 95 : 0)
-                            .foregroundColor(Color("DevoeJadeGreen"))
-                            .cornerRadius(10)
+                    VStack {
+                        Spacer()
                         
-                        VStack {
-                            Spacer()
-                            Text(gameIsOn ? "How Much is \(multiplier) x \(multiplying)?" : "")
-                                .font(.title3.bold())
-                            Spacer()
-                            Spacer()
-                            HStack {
-                                TextModifier(text: gameIsOn ? "Your Answer:" : "")
+                        ZStack {
+                            Rectangle()
+                                .frame(maxWidth: geo.size.width * 0.9, maxHeight: gameIsOn ? geo.size.height * 0.2 : 0)
+                                .foregroundColor(Color("DevoeJadeGreen"))
+                                .cornerRadius(10)
+                            
+                            VStack {
+                                Text(gameIsOn ? "How Much is \(multiplier) x \(multiplying)?" : "")
+                                    .font(.title3.bold())
+                                    .padding(.bottom)
+                                
                                 Spacer()
-                                TextModifier(text: gameIsOn ? answer : "")
+                                
+                                HStack {
+                                    TextModifier(text: gameIsOn ? "Your Answer:" : "")
+                                    Spacer()
+                                    TextModifier(text: gameIsOn ? answer : "")
+                                }
+                                .padding(.horizontal)
                             }
-                            Spacer()
+                            .frame(maxWidth: geo.size.width * 0.9, maxHeight: gameIsOn ? geo.size.height * 0.2 : 0)
+                            .padding()
                         }
-                        .padding()
-                    }
-                    .frame(maxWidth: 330, maxHeight: gameIsOn ? 95 : 0)
-                    
-                    ForEach(buttons, id: \.self) { row in
-                        HStack {
-                            ForEach(row, id: \.self) { colum in
-                                Button(action: {
-                                    didTap(button: colum)
-                                }, label: {
-                                    if colum != .delete {
-                                        Text(colum.rawValue)
-                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 95 : 0)
-                                            .font(.title2.bold())
-                                            .foregroundColor(.white)
-                                            .background(Rectangle())
-                                            .cornerRadius(5)
-                                    } else {
-                                        Image(systemName: "delete.left")
-                                            .frame(maxWidth: 105, maxHeight: gameIsOn ? 95 : 0)
-                                            .font(.title2.bold())
-                                            .foregroundColor(.white)
-                                            .background(Rectangle())
-                                            .cornerRadius(5)
-                                    }
-                                })
+                        Spacer()
+                        ForEach(buttons, id: \.self) { row in
+                            HStack {
+                                ForEach(row, id: \.self) { colum in
+                                    Button(action: {
+                                        didTap(button: colum)
+                                    }, label: {
+                                        if colum != .delete {
+                                            Text(colum.rawValue)
+                                                .frame(maxWidth: geo.size.width * 0.28, maxHeight: gameIsOn ? geo.size.height * 0.15 : 0)
+                                                .font(.title2.bold())
+                                                .foregroundColor(.white)
+                                                .background(Rectangle())
+                                                .cornerRadius(5)
+                                        } else {
+                                            Image(systemName: "delete.left")
+                                                .frame(maxWidth: geo.size.width * 0.28, maxHeight: gameIsOn ? geo.size.height * 0.15 : 0)
+                                                .font(.title2.bold())
+                                                .foregroundColor(.white)
+                                                .background(Rectangle())
+                                                .cornerRadius(5)
+                                        }
+                                    })
+                                }
                             }
                         }
+                        Spacer()
                     }
-                    Spacer()
                 }
             }
         }
@@ -156,7 +160,6 @@ struct ContentView: View {
         ZStack {
             LinearGradient(colors: [.blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
-            
             VStack {
                 if gameIsOn == false {
                     if showingSteps == false {
@@ -175,7 +178,6 @@ struct ContentView: View {
                     }
                     
                     Text(showingSteps ? "Edutainment 🔢" : "")
-                         
                         .font(.title.bold())
                     
                     choices
@@ -184,6 +186,7 @@ struct ContentView: View {
                 
                 gameView
                     .frame(maxWidth: 400, maxHeight: gameIsOn ? 550 : 0)
+                    .padding(.bottom)
                 
                 HStack {
                     Text(gameIsOn ? "Round: \(round)" : "")
