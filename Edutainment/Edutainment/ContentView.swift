@@ -70,6 +70,7 @@ struct ContentView: View {
                     withAnimation {
                         showingSteps = false
                         gameIsOn = true
+                        answer = "0"
                         questionGenerator()
                     }
                 }
